@@ -15,13 +15,14 @@ module.exports = function (notifier) {
     .receive('law-published', function (event, actions, callback) {
       logger.info('Received event ' + JSON.stringify(event));
 
-      db.user.find({ 'notifications.new-topic': true }, function (err, users) {
+      db.user.find({ tags: ObjectId(event.law.tag) }, function (err, users) {
         if (err) return callback(err);
 
         users.forEach(function (user) {
+
           actions.create('law-published',
             {
-              law: { id: event.law.id },
+              law: event.law,
               url: event.url,
               user: { name: name.format(user), email: user.email }
             },
