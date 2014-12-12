@@ -2,6 +2,7 @@ var config = require('../../config');
 var db = require('../db')(config.db);
 var transport = require('../transport');
 var logger = require('../utils/logger');
+var name = require('../utils/name');
 var templates = require('../templates');
 var t = require('../translations').t;
 var ObjectId = require('mongojs').ObjectId;
@@ -15,7 +16,7 @@ module.exports = function (notifier) {
       logger.info('Received event ' + JSON.stringify(event));
 
       actions.create('reply-argument', { reply: event.reply, comment: event.comment, url: event.url }, function (err) {
-        logger.info({message: 'Created "send-welcome" action for user ' + event.user });
+        logger.info({message: 'Created "reply-argument" action for user ' + event.user });
         callback && callback(err);
       });
 
@@ -24,15 +25,15 @@ module.exports = function (notifier) {
   // Resolver
     .resolve('reply-argument', function (action, actions, callback) {
       logger.info('Resolving action ' + JSON.stringify(action));
-      var id = action.comment.author;
+      var id = action.comment.author.id;
 
       if (action.reply.author.id == id) {
         return actions.skipped(action, callback);
       }
 
-      db.user.findOne({ _id: ObjectId(action.comment.author) }, function (err, commentAuthor) {
+      db.user.findOne({ _id: ObjectId(action.comment.author.id) }, function (err, commentAuthor) {
         if (err) return callback(err);
-        if (!commentAuthor) return callback({message: 'user not found', email: action.comment.author});
+        if (!commentAuthor) return callback({message: 'user not found', email: action.comment.author.id });
 
         if (commentAuthor.notifications && !commentAuthor.notifications.replies) {
           return actions.skipped(action, callback);
@@ -40,11 +41,14 @@ module.exports = function (notifier) {
 
         db.user.findOne({_id: ObjectId(id)}, function (err, author) {
           if (err) return callback(err);
-          if (!author) return callback({message: 'user not found', email: action.comment.author});
+          if (!author) return callback({message: 'user not found', email: action.comment.author.id });
 
           var data = {
-            author: author,
-            comment: action.comment,
+            author: {
+              firstName: author.firstName,
+              lastName: author.lastName,
+              email: author.email
+            },
             reply: action.reply,
             url: action.url
           }
@@ -58,7 +62,7 @@ module.exports = function (notifier) {
     // Executor
     .execute('reply-argument', function (action, transport, callback) {
         var vars = [
-          {name: 'USER_NAME', content: formatName(action.data.author)},
+          {name: 'USER_NAME', content: name.format(action.data.author)},
           {name: 'REPLY', content: action.reply.text},
           {name: 'URL', content: action.data.url}
         ];
@@ -83,10 +87,4 @@ module.exports = function (notifier) {
             });
         });
     });
-}
-
-
-
-function formatName (user) {
-  return user.lastName ? user.firstName + ' ' + user.lastName : user.firstName
 }
