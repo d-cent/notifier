@@ -1,4 +1,9 @@
 
+0.1.3a / 2014-12-13
+==================
+
+ * Enable notifications to new topics by tag subscription
+
 0.1.3 / 2014-12-07
 ==================
 
