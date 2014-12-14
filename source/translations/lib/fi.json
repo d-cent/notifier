@@ -1,8 +1,8 @@
 {
   "templates.email.greeting": "Hei, USER_NAME,",
-  "templates.email.signature": "DemocracyOS tiimi.",
+  "templates.email.signature": "D-CENT tiimi.",
 
-  "templates.welcome-email.subject": "Tervetuloa DemocracyOS!",
+  "templates.welcome-email.subject": "Tervetuloa D-CENT!",
   "templates.welcome-email.body": "Ole hyvä <a href=\"VALIDATE_MAIL_URL\">klikkaa tästä</a> vahvistaaksesi email-osoitteesi.",
   "templates.welcome-email.ps": "Jos et rekisteröitynyt, älä huomioi tätä viestiä.",
 
@@ -10,11 +10,11 @@
   "templates.forgot-password.body": "Ole hyvä <a href=\"{url}\">klikkaa tästä</a> vaihtaaksesi salasanasi",
   "templates.forgot-password.ps": "Jos et pyytänyt salasanan uusintaa, älä huomioi tätä viestiä.",
 
-  "templates.reply-argument.subject": "Joku vastasi perustelunne",
-  "templates.reply-argument.body": "Sinulla on uusi vastaus teitä argumentti",
+  "templates.reply-argument.subject": "Joku vastasi kommenttisi",
+  "templates.reply-argument.body": "Sinulla on uusi vastauksen sinun kommentti",
   "templates.reply-argument.body2": "Ole hyvä ja <a href=\"URL\">klikkaa tästä</a> nähdä sen",
 
-  "templates.law-published.subject": "Uusi laki julkaistiin",
-  "templates.law-published.body": "Uusi laki julkaistiin:",
+  "templates.law-published.subject": "Uusi aihe julkaistu",
+  "templates.law-published.body": "Uusi viesti julkaistiin:",
   "templates.law-published.body2": "Ole hyvä ja <a href=\"URL\">klikkaa tästä</a> nähdä sen"
 }
